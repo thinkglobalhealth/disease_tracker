@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Annotation Tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Tool layout */
+        .tool-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        @media (max-width: 768px) {
+            .tool-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Tool styling */
+        .editor-section, .preview-section, .collection-section {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 10px;
+            padding: 8px;
+            background: #f5f5f5;
+        }
+        
+        .toolbar button {
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        
+        textarea, input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+            margin-bottom: 10px;
+        }
+        
+        #editor {
+            height: 150px;
+        }
+        
+        #note {
+            height: 80px;
+        }
+        
+        #collection {
+            height: 300px;
+            font-family: monospace;
+        }
+        
+        .preview-content {
+            min-height: 150px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        
+        button.action-button {
+            padding: 5px 15px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .input-group {
+            margin-bottom: 15px;
+        }
+        
+        button {
+            padding: 8px 15px;
+            background: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .usage-instructions {
+            background: #f8f8f8;
+            padding: 15px;
+            border-left: 3px solid #0066cc;
+            margin-bottom: 20px;
+        }
+        
+        .usage-instructions h3 {
+            margin-top: 0;
+        }
+        
+        .usage-instructions code {
+            background: #eee;
+            padding: 2px 4px;
+            border-radius: 3px;
+        }
+    </style>
+    <!-- Load the scripts -->
+    <script src="https://cfr-vallenato-media.s3.amazonaws.com/public/tool-annotation/rough-notation.iife.js"></script>
+    <script src="https://cfr-vallenato-media.s3.amazonaws.com/public/tool-annotation/annotate.js"></script>
+    <script src="https://cfr-vallenato-media.s3.amazonaws.com/public/tool-annotation/leaderline.js"></script>
+      <script src="https://cfr-vallenato-media.s3.amazonaws.com/public/tool-annotation/leaderline.js"></script>
+      <link rel="stylesheet" href="https://cfr-vallenato-media.s3.amazonaws.com/public/tool-annotation/annotate.css">
+</head>
+<body>
+    <h1>Annotation Tool</h1>
+    
+    <div class="usage-instructions">
+        <h3>How to Use</h3>
+        <p>1. Add text in the editor and apply annotations using the toolbar buttons</p>
+        <p>2. Add optional explanatory notes with attribution</p> 
+        <p>3. Add to your collection and copy the generated code to embed in your CMS</p>
+        <p>4. Include <code>rough-notation.iife.js</code> and <code>annotate.js</code> in your page for the annotations to work</p>
+    </div>
+    
+    <div class="tool-container">
+        <div class="editor-section">
+            <h2>Text Editor</h2>
+            <div class="toolbar">
+                <button data-style="highlight">Highlight</button>
+                <button data-style="underline">Underline</button>
+                <button data-style="box">Box</button>
+                <button data-style="bracket">Bracket</button>
+                <button data-style="circle">Circle</button>
+                <button data-style="cross">Cross</button>
+                <button data-style="strike">Strike</button>
+            </div>
+            <textarea id="editor" placeholder="Enter text to annotate here..."></textarea>
+            
+            <h3>Annotation Note</h3>
+            <textarea id="note" placeholder="Explain why you marked this text..."></textarea>
+            
+            <h3>Attributed To</h3>
+            <input type="text" id="attribution" placeholder="Name of person making this annotation">
+            
+            <div class="button-row">
+                <button id="add-button">Add to Collection</button>
+                <button id="clear-editor-button">Clear Editor</button>
+            </div>
+        </div>
+
+        <div class="preview-section">
+            <h2>Preview</h2>
+            <div id="preview" class="preview-content"></div>
+        </div>
+    </div>
+
+    <div class="collection-section">
+        <h2>Collection (Copy and paste into your CMS)</h2>
+        <textarea id="collection" readonly></textarea>
+        <div class="button-row">
+            <button id="copy-button">Copy Collection</button>
+            <button id="clear-collection-button">Clear Collection</button>
+        </div>
+    </div>
+
+    <!-- Example of embedded annotation -->
+    <h2>Example Output</h2>
+    <main data-annotation-container>
+        <section class="content-row">
+            <article class="article-section">
+                <p>This is an example of annotated text with a <span data-annotation="highlight">highlighted portion</span> that has an accompanying note.</p>
+            </article>
+            <aside class="annotation">
+                <p>This note explains why the text was highlighted. It appears in the right column on desktop.</p>
+                <p class="annotation-attribution">— Example User</p>
+            </aside>
+            <aside class="mobile-annotation">
+                <p>This note explains why the text was highlighted. It appears below the text on mobile devices.</p>
+                <p class="annotation-attribution">— Example User</p>
+            </aside>
+        </section>
+        
+        <section class="content-row">
+            <article class="article-section">
+                <p>Here's another paragraph with <span data-annotation="underline" class="end-m end-d">underlined text</span> showing a different annotation style.</p>
+            </article>
+            <aside class="annotation start-d">
+                <p>The underline style draws attention to important points in a less prominent way than highlighting.</p>
+                <p class="annotation-attribution">— Design Team</p>
+            </aside>
+            <aside class="mobile-annotation start-m">
+                <p>The underline style draws attention to important points in a less prominent way than highlighting.</p>
+                <p class="annotation-attribution">— Design Team</p>
+            </aside>
+        </section>
+    </main>
+    <svg width="0" height="0" style="position: absolute;">
+        <defs>
+          <filter id="noise">
+            <feTurbulence baseFrequency="0.015"/>
+            <feDisplacementMap in="SourceGraphic" scale="10"/>
+          </filter>
+          <filter id="noise1">
+            <feTurbulence baseFrequency="0.5"/>
+            <feDisplacementMap in="SourceGraphic" scale="2"/>
+           </filter>
+        </defs>
+    </svg>
+</body>
+<script>
+    //desktop
+    new LeaderLine(
+      LeaderLine.pointAnchor(document.querySelector('.start-d'),{x:'0%',y:'50%'}),
+      LeaderLine.pointAnchor(document.querySelector('.end-d'),{x: '100%', y: '50%'}),
+    {hide: false, endPlug: 'arrow2',path:'arc'}
+    ) 
+    //mobile
+    new LeaderLine(
+      LeaderLine.pointAnchor(document.querySelector('.start-m'),{x:'50%',y:'0%'}),
+      LeaderLine.pointAnchor(document.querySelector('.end-m'),{x: '50%', y: '150%'}),
+    {hide: false, endPlug: 'arrow2',path:'arc'}
+    )
+    </script>
+</html>

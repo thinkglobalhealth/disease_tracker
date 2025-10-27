@@ -1,0 +1,166 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Tool layout */
+.tool-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+/*MOBILE*/
+@media (max-width: 768px) {
+    .tool-container {
+        grid-template-columns: 1fr;
+    }}
+
+/* Article layout that will be copied to CMS */
+.article-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Content takes 2/3, annotations take 1/3 */
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+
+.content-row {
+    display: contents; /* Makes children direct children of the grid */
+}
+
+.article-section {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.annotation {
+    background-color: #f8f8f8;
+    border-left: 3px solid #0066cc;
+    padding: 15px;
+    border-radius: 0 4px 4px 0;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.annotation-title {
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #0066cc;
+}
+
+.annotation-attribution {
+    text-align: right;
+    font-style: italic;
+    margin-top: 8px;
+    color: #666;
+}
+
+.annotation-placeholder {
+    margin-bottom: 1.5rem;
+}
+
+@media (max-width: 768px) {
+    .article-container {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .annotation {
+        display: none;
+    }
+    
+    .article-section .mobile-annotation {
+        display: block;
+        background-color: #f8f8f8;
+        border-left: 3px solid #0066cc;
+        padding: 15px;
+        border-radius: 0 4px 4px 0;
+        margin-top: 1rem;
+        margin-bottom: 1.5rem;
+        font-size: 0.9rem;
+    }
+
+    
+}
+
+.mobile-annotation {
+    display: none;
+}
+
+/* Tool styling */
+.editor-section, .preview-section, .collection-section {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-bottom: 20px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+    padding: 8px;
+    background: #f5f5f5;
+}
+
+.toolbar button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+textarea, input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+#editor {
+    height: 150px;
+}
+
+#note {
+    height: 80px;
+}
+
+#collection {
+    height: 300px;
+    font-family: monospace;
+}
+
+.preview-content {
+    min-height: 150px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 10px;
+}
+
+button.action-button {
+    padding: 5px 15px;
+    background: #0066cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+/* Classes for rough-notation */
+.highlight, .underline, .box, .bracket, .circle, .cross, .strike {
+    position: relative;
+    z-index: 1;
+}
+
+.leader-line {
+    filter: url(#noise1);
+}
